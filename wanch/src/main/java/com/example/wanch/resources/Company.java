@@ -17,6 +17,8 @@ public class Company{
 
     private List<Event> events = new ArrayList<>();
 
+    private String encryptedPassword;
+
     public Company(String companyName){
         this.companyName = companyName;
     }
@@ -40,5 +42,12 @@ public class Company{
 
     public void addEvent(Event event){
         events.add(event);
+    }
+    public void setEncryptedPassword(String encryptedPassword) {
+        this.encryptedPassword = encryptedPassword;
+    }
+
+    public String getEncryptedPassword() {
+        return encryptedPassword;
     }
 }
