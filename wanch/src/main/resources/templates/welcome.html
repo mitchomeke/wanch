@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Wanch - Corporate Wine & Cheese Event Planning</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter Font -->
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Blend of deep red wine, warm cheese gold, and dark plum/violet */
+            background: radial-gradient(circle at 15% 20%, #4a0d18 0%, #1e0910 40%, #261609 75%, #12060a 100%);
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4 sm:p-6 font-sans antialiased text-amber-50 selection:bg-rose-900 selection:text-white relative overflow-hidden">
+
+<!-- Ambient Soft Lighting Bubbles (Burgundy & Warm Honey) -->
+<div class="absolute -top-32 -left-32 w-[34rem] h-[34rem] bg-rose-800/25 rounded-full blur-[130px] pointer-events-none"></div>
+<div class="absolute -bottom-32 -right-32 w-[34rem] h-[34rem] bg-amber-600/15 rounded-full blur-[130px] pointer-events-none"></div>
+
+<!-- MAIN CARD CONTAINER (Glassmorphic Card over the wine/cheese background) -->
+<div class="relative z-10 w-full max-w-md bg-stone-950/70 backdrop-blur-2xl p-8 sm:p-10 rounded-3xl border border-rose-900/40 shadow-2xl shadow-stone-950/80 text-center space-y-8">
+
+    <!-- BRAND EMBLEM & HEADER -->
+    <div class="space-y-4">
+        <!-- Sommelier Pairing Badge -->
+        <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-rose-950/80 border border-rose-700/50 text-rose-200 text-[11px] font-bold tracking-widest uppercase mx-auto shadow-sm">
+            <span>🍷</span>
+            <span>Corporate Pairing Engine</span>
+            <span>🧀</span>
+        </div>
+
+        <div class="space-y-1.5">
+            <h1 class="text-4xl sm:text-5xl font-black tracking-widest uppercase bg-gradient-to-r from-amber-100 via-rose-100 to-amber-300 bg-clip-text text-transparent">
+                Wanch
+            </h1>
+            <p class="text-xs font-bold uppercase tracking-widest text-amber-200/70">
+                Precision Wine & Cheese Event Curation
+            </p>
+        </div>
+    </div>
+
+    <!-- VALUE PROP / FEATURE SNIPPET -->
+    <div class="p-4 rounded-2xl bg-stone-900/60 border border-amber-900/30 text-left space-y-2.5 backdrop-blur-sm">
+        <p class="text-xs text-amber-100/90 leading-relaxed">
+            Match your company’s available wine inventory with ideal artisanal cheeses to host seamless, perfectly paired corporate tastings.
+        </p>
+        <div class="flex items-center justify-between text-[11px] font-semibold text-amber-200/80 border-t border-rose-900/30 pt-2.5">
+            <span class="flex items-center gap-1.5 text-rose-400">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+                Pairing Logic
+            </span>
+            <span class="flex items-center gap-1.5 text-amber-400">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+                Event Logistics
+            </span>
+        </div>
+    </div>
+
+    <!-- ACTION BUTTONS -->
+    <div class="space-y-3.5">
+        <!-- Button 1: Log In -->
+        <a th:href="@{/login}"
+           class="group relative flex items-center justify-center gap-2 w-full py-3.5 bg-gradient-to-r from-rose-800 to-rose-700 hover:from-rose-700 hover:to-rose-600 active:from-rose-900 active:to-rose-800 text-white text-xs font-bold uppercase tracking-widest rounded-full shadow-lg shadow-rose-950/60 hover:shadow-rose-900/80 transition-all duration-200 border border-rose-500/40">
+            <span>Log In</span>
+            <svg class="w-4 h-4 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+            </svg>
+        </a>
+
+        <!-- Button 2: Register Company -->
+        <a th:href="@{/register}"
+           class="block w-full py-3.5 bg-amber-950/30 hover:bg-amber-900/40 text-amber-100 hover:text-white text-xs font-bold uppercase tracking-widest rounded-full border border-amber-800/40 hover:border-amber-700/60 transition-all duration-200 shadow-sm backdrop-blur-sm">
+            Register Company
+        </a>
+    </div>
+
+    <!-- FOOTER META -->
+    <div class="pt-4 border-t border-rose-900/30">
+        <p class="text-[11px] text-amber-200/60 font-medium">
+            Organize tastings, balance flavor profiles, and elevate your team events.
+        </p>
+    </div>
+
+</div>
+
+</body>
+</html>

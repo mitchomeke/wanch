@@ -5,6 +5,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,9 +16,8 @@ public class Database {
     @Bean
     @Transactional
     CommandLineRunner runner(companyRepositories compRepo, eventRepositories eventRepo,
-                             wineRepositories wineRepo, cheeseRepositories cheeseRepo){
+                             storeRepositories storeRepository, PasswordEncoder passwordEncoder){
         return args -> {
-            Store store = new Store();
             Wine cabernet = new Wine("Cabernet Sauvignon", WINETYPE.RED);
             Wine pinotNoir = new Wine("Pinot Noir", WINETYPE.RED);
             Wine chianti = new Wine("Chianti Classico", WINETYPE.RED);
@@ -28,16 +28,11 @@ public class Database {
             Wine champagne = new Wine("Champagne", WINETYPE.SPARKLING);
             Wine sauternes = new Wine("Sauternes", WINETYPE.DESSERT);
             Wine port = new Wine("Port", WINETYPE.FORTIFIED);
-            store.addWine(cabernet);
-            store.addWine(pinotNoir);
-            store.addWine(chianti);
-            store.addWine(rioja);
-            store.addWine(syrah);
-            store.addWine(sauvignonBlanc);
-            store.addWine(pinotGrigio);
-            store.addWine(champagne);
-            store.addWine(sauternes);
-            store.addWine(port);
+
+            storeRepository.saveAll(List.of(
+                    cabernet, pinotNoir, chianti, rioja, syrah,
+                    sauvignonBlanc, pinotGrigio, champagne, sauternes, port
+            ));
 
             Cheese cheddar = new Cheese("Aged Cheddar", new ArrayList<>(List.of(cabernet)));
             Cheese brie = new Cheese("Brie", new ArrayList<>(List.of(champagne, pinotNoir)));
@@ -50,32 +45,22 @@ public class Database {
             Cheese stilton = new Cheese("Stilton", new ArrayList<>(List.of(port)));
             Cheese roquefort = new Cheese("Roquefort", new ArrayList<>(List.of(sauternes, port)));
 
-            store.addCheese(cheddar);
-            store.addCheese(brie);
-            store.addCheese(parmesan);
-            store.addCheese(manchego);
-            store.addCheese(pecorino);
-            store.addCheese(goatCheese);
-            store.addCheese(mozzarella);
-            store.addCheese(brillatSavarin);
-            store.addCheese(stilton);
-            store.addCheese(roquefort);
-
-            wineRepo.saveAll(List.of(
-                    cabernet, pinotNoir, chianti, rioja, syrah,
-                    sauvignonBlanc, pinotGrigio, champagne, sauternes, port
-            ));
-
-            cheeseRepo.saveAll(List.of(
+            storeRepository.saveAll(List.of(
                     cheddar, brie, parmesan, manchego, pecorino,
                     goatCheese, mozzarella, brillatSavarin, stilton, roquefort
             ));
 
-            Company company = new Company("Amazon");
-            Event birthday = new Event("Mitchell's Birthday",company);
-            company.addEvent(birthday);
 
+            Company company = new Company("Amazon");
+            String encodedPassword = passwordEncoder.encode("Mitchell");
+            company.setEncryptedPassword(encodedPassword);
+            compRepo.save(company);
+
+            Event birthday = new Event("Mitchell's Birthday",company);
+            birthday.setCheeseList(List.of(cheddar, brie, parmesan, manchego, pecorino));
+            birthday.setWineList(List.of(cabernet, pinotNoir, chianti, rioja, syrah));
             eventRepo.save(birthday);
+
             compRepo.save(company);
 
         };

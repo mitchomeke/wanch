@@ -20,6 +20,8 @@ public class securityConfig {
                         .permitAll().anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/login")
+                        .usernameParameter("companyName")
+                        .passwordParameter("password")
                         .defaultSuccessUrl("/home",true)
                         .permitAll())
                 .logout(logout -> logout

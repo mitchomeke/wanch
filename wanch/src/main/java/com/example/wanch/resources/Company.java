@@ -4,6 +4,7 @@ package com.example.wanch.resources;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +15,6 @@ public class Company{
     private Long id;
 
     private String companyName;
-
-    private List<Event> events = new ArrayList<>();
 
     private String encryptedPassword;
 
@@ -32,17 +31,6 @@ public class Company{
         this.companyName = companyName;
     }
 
-    public List<Event> getEvents() {
-        return events;
-    }
-
-    public void setEvents(List<Event> events) {
-        this.events = events;
-    }
-
-    public void addEvent(Event event){
-        events.add(event);
-    }
     public void setEncryptedPassword(String encryptedPassword) {
         this.encryptedPassword = encryptedPassword;
     }
