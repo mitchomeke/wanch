@@ -38,4 +38,8 @@ public class Company{
     public String getEncryptedPassword() {
         return encryptedPassword;
     }
+
+    public Long getId() {
+        return id;
+    }
 }

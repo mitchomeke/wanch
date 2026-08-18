@@ -36,34 +36,23 @@ public class homeController {
     public String getHomePage(Principal principal, Model model){
         String companyName = principal.getName();
         Company company = companyRepository.findByCompanyName(companyName);
-        List<Event> companyEvents = eventRepositories.getEventsByCompany(company);
         List<Wine> allWineInStore = wineRepositories.findAll().stream().toList();
         List<Cheese> allCheeseInStore = cheeseRepositories.findAll().stream().toList();
 
         model.addAttribute("company",company);
-        model.addAttribute("companyEvents",companyEvents);
         model.addAttribute("allWinesInStore",allWineInStore);
         model.addAttribute("allCheeseInStore",allCheeseInStore);
         return "home";
     }
-    @PostMapping("/events")
+    @PostMapping("/createEvent")
     public String createEvent(Principal principal, @RequestParam("eventName")
                               String eventName, @RequestParam("wines") List<Long> wineId,
                               @RequestParam("cheeses")List<Long> cheeseId, @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate eventDate){
         Company company = companyRepository.findByCompanyName(principal.getName());
         Event event = new Event(eventName,company);
 
-        List<Wine> wines = new ArrayList<>();
-        List<Cheese> cheeses = new ArrayList<>();
-
-        for (Long id: wineId){
-            Wine wine = wineRepositories.findById(id).orElseThrow();
-            wines.add(wine);
-        }
-        for (Long id: cheeseId){
-            Cheese cheese = cheeseRepositories.findById(id).orElseThrow();
-            cheeses.add(cheese);
-        }
+        List<Wine> wines = wineRepositories.findAllById(wineId);;
+        List<Cheese> cheeses = cheeseRepositories.findAllById(cheeseId);
 
         Instant dateInstant = eventDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
         event.setEventDate(dateInstant);

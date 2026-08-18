@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Entity
@@ -13,15 +14,16 @@ public class Event {
     private Long id;
     private String eventName;
     private Instant eventDate;
-    @OneToMany
+    @ManyToMany
     private List<Wine> wineList = new ArrayList<>();
-    @OneToMany
+    @ManyToMany
     private List<Cheese> cheeseList = new ArrayList<>();
 
     @ManyToOne
     private Company eventOwner;
     public Event(){}
     public Event(String eventName,Company company){
+        this.eventName = eventName;
         eventOwner = company;
     }
     public List<Wine> getWineList() {
@@ -59,5 +61,19 @@ public class Event {
     }
     public void setEventOwner(Company eventOwner) {
         this.eventOwner = eventOwner;
+    }
+    public Long getId() {
+        return id;
+    }
+    public HashMap<Cheese,Wine> compatibleCombinations(){
+        HashMap<Cheese,Wine> compatibleCombinations = new HashMap<>();
+        for (Cheese cheese : cheeseList){
+          for (Wine wine : wineList){
+              if (cheese.getCompatibleWines().contains(wine)){
+                  compatibleCombinations.put(cheese,wine);
+              }
+          }
+        }
+        return compatibleCombinations;
     }
 }
