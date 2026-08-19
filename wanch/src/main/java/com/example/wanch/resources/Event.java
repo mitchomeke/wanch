@@ -3,9 +3,8 @@ package com.example.wanch.resources;
 import jakarta.persistence.*;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 public class Event {
@@ -18,6 +17,9 @@ public class Event {
     private List<Wine> wineList = new ArrayList<>();
     @ManyToMany
     private List<Cheese> cheeseList = new ArrayList<>();
+
+    @ElementCollection
+    Map<Wine,HashMap<Cheese,Integer>> compatibleList = new HashMap<>();
 
     @ManyToOne
     private Company eventOwner;
@@ -65,15 +67,49 @@ public class Event {
     public Long getId() {
         return id;
     }
-    public HashMap<Cheese,Wine> compatibleCombinations(){
-        HashMap<Cheese,Wine> compatibleCombinations = new HashMap<>();
-        for (Cheese cheese : cheeseList){
-          for (Wine wine : wineList){
-              if (cheese.getCompatibleWines().contains(wine)){
-                  compatibleCombinations.put(cheese,wine);
-              }
-          }
+    public HashMap<Wine, Map<Cheese,Integer>> compatibleCombinations(){
+        initializeWines();
+        HashMap<Wine,Map<Cheese,Integer>> compatibleStuff = new HashMap<>();
+        for (Wine wine : wineList){
+            for (Cheese cheese : cheeseList){
+                if (wine.getListOfCompatibleCheese().get(cheese) != null){
+                    HashMap<Cheese,Integer> map = compatibleList.get(wine);
+                    Map.Entry<Cheese,Integer> entry = wine.getEntryOfCheese(cheese);
+                    map.put(entry.getKey(),entry.getValue());
+                    compatibleStuff.put(wine, map);
+                }
+            }
         }
-        return compatibleCombinations;
+        sortCompatibles(compatibleStuff);
+        return compatibleStuff;
+    }
+
+    private void sortCompatibles(HashMap<Wine, Map<Cheese, Integer>> compatibleList) {
+        for (Map.Entry<Wine, Map<Cheese, Integer>> entry : compatibleList.entrySet()) {
+            Map<Cheese, Integer> sortedCheeses = entry.getValue().entrySet()
+                    .stream()
+                    .sorted(Map.Entry.<Cheese, Integer>comparingByValue().reversed())
+                    .collect(Collectors.toMap(
+                            Map.Entry::getKey,
+                            Map.Entry::getValue,
+                            (e1, e2) -> e1,
+                            LinkedHashMap::new
+                    ));
+            compatibleList.put(entry.getKey(), sortedCheeses);
+        }
+    }
+
+    private void initializeWines(){
+        for (Wine wine : wineList){
+            compatibleList.put(wine,new HashMap<>());
+        }
+    }
+
+    public Map<Wine, HashMap<Cheese, Integer>> getCompatibleList() {
+        return compatibleList;
+    }
+
+    public void setCompatibleList(Map<Wine, HashMap<Cheese, Integer>> compatibleList) {
+        this.compatibleList = compatibleList;
     }
 }

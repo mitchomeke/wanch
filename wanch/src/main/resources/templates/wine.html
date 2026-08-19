@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${wine != null ? wine.wineName + ' - Details' : 'Wine Details'}">Wine Details</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter Font -->
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Deep red wine, warm cheese gold, and dark plum ambient background */
+            background: radial-gradient(circle at 15% 20%, #4a0d18 0%, #1e0910 40%, #261609 75%, #12060a 100%);
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+<body class="min-h-screen font-sans antialiased text-amber-50 selection:bg-rose-900 selection:text-white relative overflow-x-hidden">
+
+<!-- Ambient Soft Lighting Bubbles -->
+<div class="absolute -top-32 -left-32 w-[34rem] h-[34rem] bg-rose-800/25 rounded-full blur-[130px] pointer-events-none"></div>
+<div class="absolute top-1/2 -right-32 w-[34rem] h-[34rem] bg-amber-600/15 rounded-full blur-[130px] pointer-events-none"></div>
+
+<!-- HEADER NAVIGATION -->
+<header class="sticky top-0 z-40 w-full border-b border-rose-900/40 bg-stone-950/70 backdrop-blur-2xl transition-all">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+        <!-- Brand Logo -->
+        <a th:href="@{/home}" class="flex items-center gap-3 group">
+            <span class="text-xl font-black tracking-widest uppercase bg-gradient-to-r from-amber-100 via-rose-100 to-amber-300 bg-clip-text text-transparent">
+                WANCH
+            </span>
+            <span class="hidden sm:inline-block text-xs font-semibold px-2.5 py-0.5 rounded-full bg-rose-950/80 border border-rose-700/50 text-rose-200">
+                Sommelier Guide
+            </span>
+        </a>
+
+        <!-- Back Button -->
+        <a href="javascript:history.back()"
+           class="inline-flex items-center gap-1.5 px-4 py-1.5 bg-amber-950/40 hover:bg-amber-900/50 text-amber-200 hover:text-white text-xs font-semibold rounded-full transition-all border border-amber-800/40 hover:border-amber-700/60 shadow-sm backdrop-blur-sm">
+            <span class="text-sm leading-none">&larr;</span> Back
+        </a>
+    </div>
+</header>
+
+<main class="max-w-4xl mx-auto px-4 sm:px-6 py-8 space-y-8 relative z-10">
+
+    <!-- HERO BANNER -->
+    <div class="relative overflow-hidden rounded-3xl bg-stone-950/70 backdrop-blur-2xl p-6 sm:p-8 border border-rose-900/40 shadow-2xl shadow-stone-950/80">
+        <div class="absolute top-0 right-0 w-72 h-72 bg-rose-800/20 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="relative z-10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div class="space-y-1">
+                <span class="text-xs font-bold uppercase tracking-widest text-rose-400 block"
+                      th:text="${wine != null ? wine.winetype : 'Wine Spotlight'}">Wine Type</span>
+                <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-amber-100"
+                    th:text="${wine != null ? wine.wineName : 'Wine Name'}">Wine Name</h1>
+            </div>
+
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-rose-950/80 border border-rose-700/50 text-rose-200 text-xs font-bold tracking-widest uppercase shrink-0 shadow-sm">
+                <span>🍷</span>
+                <span>Active Reserve</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- WINE DESCRIPTION / TASTING NOTES SECTION -->
+    <div class="bg-stone-950/70 backdrop-blur-2xl p-6 sm:p-8 rounded-3xl border border-rose-900/40 shadow-2xl shadow-stone-950/80 space-y-4">
+        <div class="flex items-center justify-between border-b border-rose-900/30 pb-3">
+            <h2 class="text-base font-bold text-amber-100 tracking-tight flex items-center gap-2">
+                <span>Sommelier Tasting Notes & Profile</span>
+            </h2>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-rose-300/80">AI Enhanced</span>
+        </div>
+
+        <!-- Description Content -->
+        <p class="text-sm text-amber-50/90 leading-relaxed font-normal bg-stone-900/60 p-4 sm:p-5 rounded-2xl border border-rose-900/20 italic"
+           th:text="${wineDescription != null ? wineDescription.getWineDescription() : 'No detailed description available for this wine selection yet.'}">
+            Rich and structured with complex layers of dark berries, soft tannins, and subtle oak notes. Perfect for heavy artisanal pairings.
+        </p>
+    </div>
+
+    <!-- COMPATIBLE CHEESES SECTION -->
+    <div class="bg-stone-950/70 backdrop-blur-2xl p-6 sm:p-8 rounded-3xl border border-rose-900/40 shadow-2xl shadow-stone-950/80 space-y-6">
+
+        <div class="flex items-center justify-between border-b border-rose-900/30 pb-4">
+            <h2 class="text-lg font-bold text-amber-100 tracking-tight flex items-center gap-2">
+                <span>Compatible Cheese Pairings</span>
+                <span th:text="${compatibleCheese != null ? #maps.size(compatibleCheese) : 0}"
+                      class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-rose-950/80 text-rose-200 border border-rose-700/50">0</span>
+            </h2>
+        </div>
+
+        <!-- EMPTY STATE -->
+        <div th:if="${compatibleCheese == null or compatibleCheese.isEmpty()}" class="text-center py-12 space-y-3">
+            <div class="w-12 h-12 rounded-2xl bg-stone-900/80 text-amber-200/40 flex items-center justify-center mx-auto border border-amber-900/30 text-xl">
+                🧀
+            </div>
+            <p class="text-sm font-semibold text-amber-200/60">No compatible cheeses mapped for this wine yet.</p>
+        </div>
+
+        <!-- CHEESE PAIRING GRID -->
+        <div th:if="${compatibleCheese != null and !compatibleCheese.isEmpty()}" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <div th:each="entry : ${compatibleCheese}"
+                 class="flex items-center justify-between p-4 rounded-2xl bg-stone-900/60 hover:bg-stone-900/90 border border-amber-900/30 hover:border-rose-900/50 transition-all duration-200">
+
+                <!-- Cheese Info -->
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-amber-950/80 text-amber-400 font-bold text-sm flex items-center justify-center border border-amber-800/50 shadow-inner shrink-0">
+                        🧀
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-amber-100" th:text="${entry.key.cheeseName}">Cheese Name</h3>
+                        <span class="text-[10px] font-medium text-amber-200/60 uppercase tracking-wider">Artisanal Selection</span>
+                    </div>
+                </div>
+
+                <!-- Compatibility Score Badge -->
+                <span class="text-xs font-bold px-3 py-1 rounded-full bg-amber-950/80 text-amber-300 border border-amber-700/50 shadow-sm shrink-0"
+                      th:text="${entry.value + '% Match'}">
+                    95% Match
+                </span>
+            </div>
+        </div>
+
+    </div>
+
+</main>
+
+</body>
+</html>

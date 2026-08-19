@@ -18,6 +18,7 @@ public class Database {
     CommandLineRunner runner(companyRepositories compRepo, eventRepositories eventRepo,
                              storeRepositories storeRepository, PasswordEncoder passwordEncoder){
         return args -> {
+            // --- WINES ---
             Wine cabernet = new Wine("Cabernet Sauvignon", WINETYPE.RED);
             Wine pinotNoir = new Wine("Pinot Noir", WINETYPE.RED);
             Wine chianti = new Wine("Chianti Classico", WINETYPE.RED);
@@ -34,6 +35,7 @@ public class Database {
                     sauvignonBlanc, pinotGrigio, champagne, sauternes, port
             ));
 
+// --- CHEESES ---
             Cheese cheddar = new Cheese("Aged Cheddar", new ArrayList<>(List.of(cabernet)));
             Cheese brie = new Cheese("Brie", new ArrayList<>(List.of(champagne, pinotNoir)));
             Cheese parmesan = new Cheese("Parmesan", new ArrayList<>(List.of(chianti)));
@@ -44,6 +46,40 @@ public class Database {
             Cheese brillatSavarin = new Cheese("Brillat-Savarin", new ArrayList<>(List.of(champagne)));
             Cheese stilton = new Cheese("Stilton", new ArrayList<>(List.of(port)));
             Cheese roquefort = new Cheese("Roquefort", new ArrayList<>(List.of(sauternes, port)));
+
+            storeRepository.saveAll(List.of(
+                    cheddar, brie, parmesan, manchego, pecorino,
+                    goatCheese, mozzarella, brillatSavarin, stilton, roquefort
+            ));
+
+            cabernet.addCompatibleCheese(cheddar, 95);
+
+            pinotNoir.addCompatibleCheese(brie, 90);
+
+            chianti.addCompatibleCheese(parmesan, 94);
+            chianti.addCompatibleCheese(pecorino, 91);
+
+            rioja.addCompatibleCheese(manchego, 98);
+
+            syrah.addCompatibleCheese(pecorino, 89);
+
+            sauvignonBlanc.addCompatibleCheese(goatCheese, 96);
+
+            pinotGrigio.addCompatibleCheese(mozzarella, 88);
+
+            champagne.addCompatibleCheese(brie, 92);
+            champagne.addCompatibleCheese(brillatSavarin, 95);
+
+            sauternes.addCompatibleCheese(roquefort, 97); // Iconic French pairing
+
+            port.addCompatibleCheese(stilton, 98);
+            port.addCompatibleCheese(roquefort, 93);
+
+
+            storeRepository.saveAll(List.of(
+                    cabernet, pinotNoir, chianti, rioja, syrah,
+                    sauvignonBlanc, pinotGrigio, champagne, sauternes, port
+            ));
 
             storeRepository.saveAll(List.of(
                     cheddar, brie, parmesan, manchego, pecorino,
