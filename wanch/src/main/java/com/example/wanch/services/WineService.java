@@ -1,6 +1,6 @@
 package com.example.wanch.services;
 
-import com.example.wanch.WineDTO;
+import com.example.wanch.DTOs.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -17,7 +17,7 @@ public class WineService {
         return restClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/food/wine/description")
-                        .queryParam("wine", wineName)
+                        .queryParam("wine", wineName.toLowerCase())
                         .build())
                 .retrieve()
                 .body(WineDTO.class);

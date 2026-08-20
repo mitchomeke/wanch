@@ -44,7 +44,7 @@ public class searchController {
     }
     private String cheeseSearch(Long cheeseId, Model model){
         Cheese cheese = cheeseRepository.findById(cheeseId).orElseThrow();
-        List<Wine> compatibleWine = cheese.getCompatibleWines();
+        Map<Wine,Integer> compatibleWine = cheese.getCompatibleWines();
         model.addAttribute("cheese",cheese);
         model.addAttribute("compatibleWine",compatibleWine);
         model.addAttribute("cheeseDescription",cheeseService.getCheeseDescription(cheese.getCheeseName()));
