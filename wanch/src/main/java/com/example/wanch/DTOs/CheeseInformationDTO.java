@@ -7,4 +7,4 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record CheeseInformationDTO(Long id, String name,
                                    @JsonProperty("aisle") String description,
-                                   List<String> consistency){}
+                                   String consistency){}

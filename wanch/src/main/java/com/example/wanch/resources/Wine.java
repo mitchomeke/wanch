@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import org.apache.tomcat.util.collections.ManagedConcurrentWeakHashMap;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 public class Wine extends Store{
@@ -21,7 +22,11 @@ public class Wine extends Store{
     public Wine() {}
 
     public Map<Cheese,Integer> getListOfCompatibleCheese() {
-        return listOfCompatibleCheese;
+         return listOfCompatibleCheese.entrySet().stream().sorted(
+                 Map.Entry.<Cheese,Integer>comparingByValue().reversed()
+         ).collect(Collectors.toMap(Map.Entry::getKey,Map.Entry::getValue,
+                 (e1,e2) -> e1,
+                 LinkedHashMap::new));
     }
     public Map.Entry<Cheese,Integer> getEntryOfCheese(Cheese cheese){
         for (Map.Entry<Cheese, Integer> entry : listOfCompatibleCheese.entrySet()) {

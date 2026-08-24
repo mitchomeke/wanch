@@ -112,4 +112,8 @@ public class Event {
     public void setCompatibleList(Map<Wine, HashMap<Cheese, Integer>> compatibleList) {
         this.compatibleList = compatibleList;
     }
+    public void deletePairing(Long wineId){
+        wineList.removeIf(w -> w.getId().equals(wineId));
+        compatibleList.keySet().removeIf(w -> w.getId().equals(wineId));
+    }
 }

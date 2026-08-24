@@ -62,6 +62,6 @@ public class homeController {
         eventRepositories.save(event);
         companyRepository.save(company);
 
-        return "redirect:/home";
+        return "redirect:/events?companyId="+company.getId();
     }
 }
