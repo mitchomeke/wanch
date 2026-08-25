@@ -9,7 +9,7 @@ import org.springframework.web.client.RestClient;
 public class WineService {
     private final RestClient restClient;
 
-    public WineService(RestClient.Builder builder, @Value("${api.spoonacular.key}") String apiKey) {
+    public WineService(RestClient.Builder builder, @Value("${SPOONACULAR_API_KEY:dummy_key_or_empty}") String apiKey) {
         this.restClient = builder.baseUrl("https://api.spoonacular.com").defaultRequest(requestHeadersSpec ->
                 requestHeadersSpec.header("x-api-key",apiKey)).build();
     }

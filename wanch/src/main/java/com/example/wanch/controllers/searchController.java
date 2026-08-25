@@ -4,6 +4,7 @@ import com.example.wanch.resources.Cheese;
 import com.example.wanch.resources.Wine;
 import com.example.wanch.services.CheeseService;
 import com.example.wanch.services.WineService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,8 +15,11 @@ import java.util.Map;
 
 @Controller
 public class searchController {
+    @Autowired
     private final WineService wineService;
+    @Autowired
     private final CheeseService cheeseService;
+
     private final cheeseRepositories cheeseRepository;
     private final wineRepositories wineRepository;
 
