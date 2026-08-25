@@ -1,19 +1,14 @@
-# Step 1: Build the JAR
-FROM eclipse-temurin:21-jdk AS build
+# Step 1: Build using official Gradle image (uses global 'gradle')
+FROM gradle:8.5-jdk21 AS build
 WORKDIR /app
 COPY . .
 
-# Grant execute permissions
-RUN chmod +x ./gradlew
+# Uses installed 'gradle' instead of local './gradlew' script
+RUN gradle build -x test
 
-# Build project skipping tests
-RUN ./gradlew build -x test
-
-# Step 2: Run the application
+# Step 2: Run the Application
 FROM eclipse-temurin:21-jre
 WORKDIR /app
-
-# Safely copy the single JAR produced
 COPY --from=build /app/build/libs/*.jar app.jar
 
 EXPOSE 8080
