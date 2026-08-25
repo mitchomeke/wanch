@@ -66,6 +66,12 @@ public class eventsController {
 
         return "redirect:/events?companyId="+company.getId();
     }
+    @PostMapping("/deleteEvent")
+    public String deleteEvent(@RequestParam("eventId") Long eventId, Principal principal){
+        Company company = companyRepository.findByCompanyName(principal.getName());
+        eventRepository.deleteById(eventId);
+        return "redirect:/events?companyId="+company.getId();
+    }
 
 
 
