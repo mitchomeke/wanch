@@ -190,6 +190,7 @@ public class Database {
                     goatCheese, mozzarella, gruyere, stilton, roquefort,
                     gouda, camembert, gorgonzola, feta, fontina, comte
             ));
+            //Completed
 
             Company company = new Company("Amazon");
             String encodedPassword = passwordEncoder.encode("Mitchell");
