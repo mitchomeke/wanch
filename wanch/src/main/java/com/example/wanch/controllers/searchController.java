@@ -15,9 +15,9 @@ import java.util.Map;
 
 @Controller
 public class searchController {
-    @Autowired
+
     private final WineService wineService;
-    @Autowired
+
     private final CheeseService cheeseService;
 
     private final cheeseRepositories cheeseRepository;
