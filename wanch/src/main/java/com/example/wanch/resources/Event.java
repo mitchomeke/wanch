@@ -13,11 +13,11 @@ public class Event {
     private Long id;
     private String eventName;
     private Instant eventDate;
+    private double eventBudget;
     @ManyToMany
     private List<Wine> wineList = new ArrayList<>();
     @ManyToMany
     private List<Cheese> cheeseList = new ArrayList<>();
-
     @ElementCollection
     Map<Wine,HashMap<Cheese,Integer>> compatibleList = new HashMap<>();
 
@@ -67,6 +67,7 @@ public class Event {
     public Long getId() {
         return id;
     }
+
     public HashMap<Wine, Map<Cheese,Integer>> compatibleCombinations(){
         initializeWines();
         HashMap<Wine,Map<Cheese,Integer>> compatibleStuff = new HashMap<>();
