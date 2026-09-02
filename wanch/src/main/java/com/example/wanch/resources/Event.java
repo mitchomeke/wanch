@@ -13,7 +13,6 @@ public class Event {
     private Long id;
     private String eventName;
     private Instant eventDate;
-    private double eventBudget;
     @ManyToMany
     private List<Wine> wineList = new ArrayList<>();
     @ManyToMany
