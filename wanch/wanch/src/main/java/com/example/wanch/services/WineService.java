@@ -1,0 +1,25 @@
+package com.example.wanch.services;
+
+import com.example.wanch.DTOs.*;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClient;
+
+@Service
+public class WineService {
+    private final RestClient restClient;
+
+    public WineService(RestClient.Builder builder, @Value("${SPOONACULAR_API_KEY:dummy_key_or_empty}") String apiKey) {
+        this.restClient = builder.baseUrl("https://api.spoonacular.com").defaultRequest(requestHeadersSpec ->
+                requestHeadersSpec.header("x-api-key",apiKey)).build();
+    }
+    public WineDTO getWineDescription(String wineName){
+        return restClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/food/wine/description")
+                        .queryParam("wine", wineName.toLowerCase())
+                        .build())
+                .retrieve()
+                .body(WineDTO.class);
+    }
+}
